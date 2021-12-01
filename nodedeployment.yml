@@ -6,6 +6,9 @@ metadata:
   name: nodedeployment
   namespace: testns
 spec:
+  selector:
+    matchLabels:
+      app: nodeapp
   template:
     metadata: 
       name: nodepod
