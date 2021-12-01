@@ -1,0 +1,76 @@
+#Deployment
+
+apiVersion: apps/v1
+kind:Deployment
+metadata:
+  name: nodedeployment
+  namespace: testns
+spec:
+  selector:
+    matchLabels:
+      app: nodeapp
+  template:
+    metadata:
+      labels:
+        app: nodeapp
+    spec:
+      containers:
+      - name: nodeappcontainer
+        image: vignesh130597/nodejs-app:3
+        ports:
+        - containerPort: 9981
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "100m"
+            memory: "512Mi"
+
+---
+
+#HPA
+
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name:hpadepautoscaler
+  namespace: testns
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind:Deployment
+    name: nodedeployment
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+  -type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 40
+
+---
+
+#Service
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeservice
+  namespace: testns
+spec:
+  selector:
+    app: nodeapp
+    type: NodePort
+  ports:
+  - port: 80
+    targetPort: 9981 
+   
