@@ -10,7 +10,9 @@ spec:
     matchLabels:
       app: nodeapp
   template:
-    metadata:
+    metadata: 
+      name: nodepod
+      namespace: testns
       labels:
         app: nodeapp
     spec:
