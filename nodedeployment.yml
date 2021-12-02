@@ -20,10 +20,10 @@ spec:
         image: vignesh130597/nodejs-app:3
         ports:
         - containerPort: 9981
-      resources:
-        requests:
-          cpu: 100m
-          memory: 256Mi
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
         limits:
           cpu: 100m
           memory: 512Mi
